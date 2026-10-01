@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego del Ahorcado Clásico</title>
+</head>
+<body>
+
+    <!-- MENÚ PRINCIPAL Y ESTADÍSTICAS -->
+    <h1>Juego del Ahorcado</h1>
+    <p><strong>Estadísticas acumuladas:</strong> Ganadas: <span id="ganadas">0</span> | Perdidas: <span id="perdidas">0</span></p>
+    <hr>
+
+    <!-- SELECCIÓN DE CATEGORÍA -->
+    <h2>1. Configuración de Partida</h2>
+    <label for="categoria"><strong>Elige una categoría:</strong></label>
+    <select id="categoria">
+        <option value="1">1. Tecnología</option>
+        <option value="2">2. Animales</option>
+        <option value="3">3. Países</option>
+    </select>
+    <button onclick="iniciarJuego()">Iniciar Nueva Partida</button>
+    <hr>
+
+    <!-- ESTADO DEL JUEGO Y DIBUJO -->
+    <h2>2. Tablero de Juego</h2>
+    <!-- APARTADO DE DESCRIPCIÓN Y PISTA DE LA CATEGORÍA -->
+    <p><strong>Categoría actual:</strong> <span id="nombreCategoria">-</span></p>
+    <p><strong>Descripción de la palabra:</strong> <span id="pistaDescripcion"><em>Selecciona una categoría para empezar.</em></span></p>
+    
+    <pre id="dibujoAhorcado">
+       +---+
+       |   |
+           |
+           |
+           |
+           |
+    =========
+    </pre>
+
+    <p><strong>Palabra Oculta:</strong> <span id="palabraOculta">_ _ _ _</span></p>
+    <p><strong>Intentos Restantes:</strong> <span id="intentos">6</span></p>
+    <p><strong>Letras Probadas:</strong> <span id="letrasUsadas">Ninguna</span></p>
+    <hr>
+
+    <!-- ENTRADA DE DATOS Y PISTAS -->
+    <h2>3. Acciones del Jugador</h2>
+    <label for="inputLetra"><strong>Ingresa una letra:</strong></label>
+    <input type="text" id="inputLetra" maxlength="1" size="3">
+    <button onclick="probarLetra()">Probar Letra</button>
+    <button onclick="pedirPistaLetra()">Revelar una Letra</button>
+    <hr>
+
+    <!-- MENSAJES DE ESTADO -->
+    <h2>4. Mensajes</h2>
+    <p id="mensaje"><em>Selecciona una categoría e inicia una partida.</em></p>
+
+
+    <!-- LÓGICA EN JAVASCRIPT -->
+    <script>
+        // Estructura de categorías con nombre, palabras y descripciones
+        const CATEGORIAS = {
+            "1": {
+                nombre: "Tecnología",
+                palabras: [
+                    { palabra: "python", pista: "Lenguaje de programación muy popular para desarrollo web e inteligencia artificial." },
+                    { palabra: "software", pista: "Conjunto de programas, instrucciones y reglas informáticas para ejecutar tareas." },
+                    { palabra: "computadora", pista: "Máquina electrónica que procesa y almacena información y datos." },
+                    { palabra: "programa", pista: "Secuencia de instrucciones ordenadas para realizar una tarea en la computadora." }
+                ]
+            },
+            "2": {
+                nombre: "Animales",
+                palabras: [
+                    { palabra: "elefante", pista: "Mamífero terrestre de gran tamaño con una larga trompa y colmillos." },
+                    { palabra: "jirafa", pista: "Animal mamífero caracterizado por tener un cuello extremadamente largo." },
+                    { palabra: "cocodrilo", pista: "Gran reptil semiacuático carnívoro de piel escamosa y mandíbulas fuertes." },
+                    { palabra: "pantera", pista: "Felino grande de pelaje negro o manchado, cazador ágil." }
+                ]
+            },
+            "3": {
+                nombre: "Países",
+                palabras: [
+                    { palabra: "ecuador", pista: "País sudamericano atravesado por la línea ecuatorial y famoso por las Islas Galápagos." },
+                    { palabra: "colombia", pista: "País de América del Sur conocido por su producción de café y biodiversidad." },
+                    { palabra: "argentina", pista: "País ubicado en el extremo sur de América, famoso por el tango y la Patagonia." },
+                    { palabra: "espana", pista: "País europeo ubicado en la península ibérica." }
+                ]
+            }
+        };
+
+        const DIBUJOS = [
+            "  +---+\n  |   |\n      |\n      |\n      |\n=====",
+            "  +---+\n  |   |\n  O   |\n      |\n      |\n=====",
+            "  +---+\n  |   |\n  O   |\n  |   |\n      |\n=====",
+            "  +---+\n  |   |\n  O   |\n /|   |\n      |\n=====",
+            "  +---+\n  |   |\n  O   |\n /|\\  |\n      |\n=====",
+            "  +---+\n  |   |\n  O   |\n /|\\  |\n /    |\n=====",
+            "  +---+\n  |   |\n  O   |\n /|\\  |\n / \\  |\n====="
+        ];
+
+        let objetoPalabraActual = null;
+        let palabraSecreta = "";
+        let intentosRestantes = 6;
+        let letrasUsadas = [];
+        let stats = { ganadas: 0, perdidas: 0 };
+
+        function iniciarJuego() {
+            const catKey = document.getElementById("categoria").value;
+            const categoriaSeleccionada = CATEGORIAS[catKey];
+            const lista = categoriaSeleccionada.palabras;
+            
+            // Seleccionar un objeto de palabra al azar
+            objetoPalabraActual = lista[Math.floor(Math.random() * lista.length)];
+            palabraSecreta = objetoPalabraActual.palabra.toLowerCase();
+            
+            intentosRestantes = 6;
+            letrasUsadas = [];
+            
+            // Mostrar nombre de categoría y descripción de la palabra
+            document.getElementById("nombreCategoria").innerText = categoriaSeleccionada.nombre;
+            document.getElementById("pistaDescripcion").innerText = objetoPalabraActual.pista;
+
+            document.getElementById("inputLetra").disabled = false;
+            document.getElementById("mensaje").innerText = "¡Partida iniciada! Adivina la palabra.";
+            actualizarPantalla();
+        }
+
+        function probarLetra() {
+            const input = document.getElementById("inputLetra");
+            const letra = input.value.toLowerCase().trim();
+            input.value = ""; 
+
+            if (!letra || !/^[a-zñ]$/.test(letra)) {
+                document.getElementById("mensaje").innerText = "Por favor ingresa una sola letra válida.";
+                return;
+            }
+
+            if (letrasUsadas.includes(letra)) {
+                document.getElementById("mensaje").innerText = "Ya habías intentado la letra '" + letra + "'.";
+                return;
+            }
+
+            letrasUsadas.push(letra);
+
+            if (!palabraSecreta.includes(letra)) {
+                intentosRestantes--; 
+                document.getElementById("mensaje").innerText = "La letra '" + letra + "' NO está en la palabra.";
+            } else {
+                document.getElementById("mensaje").innerText = "¡Bien! La letra '" + letra + "' SÍ está.";
+            }
+
+            actualizarPantalla();
+            verificarFinJuego();
+        }
+
+        function pedirPistaLetra() {
+            if (intentosRestantes <= 0 || !palabraSecreta) return;
+
+            const faltantes = palabraSecreta.split("").filter(function(l) {
+                return !letrasUsadas.includes(l);
+            });
+
+            if (faltantes.length > 0) {
+                const pista = faltantes[Math.floor(Math.random() * faltantes.length)];
+                letrasUsadas.push(pista);
+                document.getElementById("mensaje").innerText = "-> Pista extra: Se reveló la letra '" + pista + "'";
+                actualizarPantalla();
+                verificarFinJuego();
+            }
+        }
+
+        function actualizarPantalla() {
+            let textoOculto = palabraSecreta
+                .split("")
+                .map(function(letra) {
+                    return letrasUsadas.includes(letra) ? letra : "_";
+                })
+                .join(" ");
+
+            document.getElementById("palabraOculta").innerText = textoOculto;
+            document.getElementById("intentos").innerText = intentosRestantes;
+            document.getElementById("letrasUsadas").innerText = letrasUsadas.join(", ") || "Ninguna";
+            document.getElementById("dibujoAhorcado").innerText = DIBUJOS[6 - intentosRestantes];
+        }
+
+        function verificarFinJuego() {
+            const haGanado = palabraSecreta.split("").every(function(letra) {
+                return letrasUsadas.includes(letra);
+            });
+
+            if (haGanado) {
+                document.getElementById("mensaje").innerText = "¡FELICIDADES! Ganaste la partida.";
+                stats.ganadas++;
+                finalizarPartida();
+            } else if (intentosRestantes <= 0) {
+                document.getElementById("mensaje").innerText = "¡PERDISTE! La palabra era: " + palabraSecreta.toUpperCase();
+                stats.perdidas++;
+                finalizarPartida();
+            }
+        }
+
+        function finalizarPartida() {
+            document.getElementById("inputLetra").disabled = true;
+            document.getElementById("ganadas").innerText = stats.ganadas;
+            document.getElementById("perdidas").innerText = stats.perdidas;
+        }
+
+        iniciarJuego();
+    </script>
+
+</body>
+</html>
