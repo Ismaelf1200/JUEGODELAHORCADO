@@ -1,5 +1,6 @@
 Intregrante: Ismael FLores
 Juego del ahorcado
+11/10/2026
 # 🎮 Juego del Ahorcado Interactivo (Pygame)
 
 Un clásico juego del ahorcado rediseñado con una interfaz moderna de estilo **Dark UI**, soporte para categorías temáticas, teclado en pantalla interactivo y estadísticas de juego en tiempo real. Desarrollado en Python utilizando la librería **Pygame**.
