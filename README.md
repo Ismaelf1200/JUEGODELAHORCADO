@@ -11,7 +11,7 @@ Un clásico juego del ahorcado rediseñado con una interfaz moderna de estilo **
 
 *  Interfaz Dark UI:** Diseño limpio y moderno inspirado en interfaces web actuales (tonos oscuros, bordes redondeados y colores de acento claros).
 *  Selector de Categorías:** Juega con palabras aleatorias de diferentes temas (*Tecnología*, *Animales*, *Países*) o selecciona la opción *"Todas"*.
-*  Doble Entrada (Teclatua y Clic):** Puedes jugar usando tu teclado físico o haciendo clic directamente sobre el teclado virtual en pantalla.
+*  Doble Entrada (Tecla y Clic):** Puedes jugar usando tu teclado físico o haciendo clic directamente sobre el teclado virtual en pantalla.
 *  Panel de Estadísticas:** Contador persistente de partidas ganadas y perdidas durante la sesión.
 *  Sistema de Pistas:** Cada palabra viene acompañada de una breve descripción para facilitar el juego.
 
