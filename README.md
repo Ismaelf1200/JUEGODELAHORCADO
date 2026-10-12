@@ -3,19 +3,18 @@ Juego del ahorcado
 11/10/2026
 #  Juego del Ahorcado Interactivo (Pygame)
 
-Un clásico juego del ahorcado rediseñado con una interfaz moderna de estilo **Dark UI**, soporte para categorías temáticas, teclado en pantalla interactivo y estadísticas de juego en tiempo real. Desarrollado en Python utilizando la librería **Pygame**.
+Un clásico juego del ahorcado rediseñado con una interfaz moderna de estilo **Dark UI**, soporte para categorías temáticas, teclado en pantalla interactivo y estadísticas de juego en tiempo real. Desarrollado en Python utilizando la librería "Pygame".
 
----
 
 ##  Características Principales
 
-*  Interfaz Dark UI:** Diseño limpio y moderno inspirado en interfaces web actuales (tonos oscuros, bordes redondeados y colores de acento claros).
-*  Selector de Categorías:** Juega con palabras aleatorias de diferentes temas (*Tecnología*, *Animales*, *Países*) o selecciona la opción *"Todas"*.
-*  Doble Entrada (Tecla y Clic):** Puedes jugar usando tu teclado físico o haciendo clic directamente sobre el teclado virtual en pantalla.
-*  Panel de Estadísticas:** Contador persistente de partidas ganadas y perdidas durante la sesión.
-*  Sistema de Pistas:** Cada palabra viene acompañada de una breve descripción para facilitar el juego.
+*  Interfaz Dark UI: Diseño limpio y moderno inspirado en interfaces web actuales (tonos oscuros, bordes redondeados y colores de acento claros).
+*  Selector de Categorías:Juega con palabras aleatorias de diferentes temas (*Tecnología*, *Animales*, *Países*) o selecciona la opción "Todas".
+*  Doble Entrada (Tecla y Clic):Puedes jugar usando tu teclado físico o haciendo clic directamente sobre el teclado virtual en pantalla.
+*  Panel de Estadísticas:Contador persistente de partidas ganadas y perdidas durante la sesión.
+*  Sistema de Pistas:Cada palabra viene acompañada de una breve descripción para facilitar el juego.
 
----
+
 
 # Requisitos del Sistema
 
