@@ -18,14 +18,14 @@ Un clásico juego del ahorcado rediseñado con una interfaz moderna de estilo **
 
 # Requisitos del Sistema
 
-* **Python** (versión 3.7 o superior recomendada)
-* **Pygame**
+* "Python" (versión 3.7 o superior recomendada)
+* "Pygame"
 
 ---
 
 # Instalación y Configuración
 
-1. **Clona el repositorio o descarga los archivos:**
+1. Clona el repositorio o descarga los archivos:
    ```bash
    git clone [https://github.com/tu-usuario/ahorcado-pygame.git](https://github.com/tu-usuario/ahorcado-pygame.git)
    cd ahorcado-pygame
